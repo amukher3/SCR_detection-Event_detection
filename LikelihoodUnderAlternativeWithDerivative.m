@@ -10,7 +10,7 @@ dmu_dalpha= 1*(exp((x(2)-i*T)/x(3))-exp((x(2)-i*T)/x(4)));   %dmu/d(alpha)
 dmu_dtau = x(1)*((exp((x(2)-i*T)/x(3)))/x(3)-(exp((x(2)-i*T)/x(4)))/x(4));    %dmu/d(tau)
 dmu_dtauOne = -x(1)*(exp((x(2)-i*T)/x(3))*((x(2)-i*T)/(x(3)^2)));    %dmu/d(tauOne)
 dmu_dtauTwo= x(1)*(exp((x(2)-i*T)/x(4))*((x(2)-i*T)/(x(4)^2)));      %dmu/d(tauTwo)
-dL_dmu= (sample_differences(i)- mu(i))/(2*(noise_var)^2);            %dL/d(mu)
+dL_dmu= (sample_differences(i)- mu(i))/((noise_var));                %dL/d(mu)
 dL_dalpha = dL_dalpha + dL_dmu*dmu_dalpha;                           %dL/d(alpha)= dL/dmu*dmu/d(alpha)
 dL_dtau = dL_dtau + dL_dmu*dmu_dtau;                                 %dL/d(tau)= dL/dmu*dmu/d(tau)
 dL_dtauOne = dL_dtauOne + dL_dmu*dmu_dtauOne;                        %dL/d(tauOne)= dL/dmu*dmu/d(tauOne)
@@ -21,3 +21,4 @@ L=-(Lhood);
 L_prime_alpha = (dL_dalpha); L_prime_tau =  (dL_dtau); L_prime_tauOne = (dL_dtauOne); L_prime_tauTwo = (dL_dtauTwo);
 g=[-L_prime_alpha; -L_prime_tau; -L_prime_tauOne; -L_prime_tauTwo];
 end
+
