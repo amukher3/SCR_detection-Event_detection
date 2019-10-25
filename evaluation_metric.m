@@ -6,15 +6,18 @@ close all
 load('C:\Users\Abhishek Mukherjee\Downloads\DataIndex.mat');
 load('C:\Users\Abhishek Mukherjee\Downloads\CData.mat');
 load('C:\Users\Abhishek Mukherjee\Downloads\DataIndex5.mat');
-% Users= {(user1),(user2),(user3),(user5),(user6),(user8),(user9)};
-%DataIndexes= {(DataIndex1),(DataIndex2),(DataIndex3),(DataIndex5),(DataIndex6),(DataIndex8),(DataIndex9)};
- Users = {(user2)};
- DataIndexes = {(DataIndex2)};
+load('C:\Users\Abhishek Mukherjee\Downloads\DataIndex4.mat');
+load('C:\Users\Abhishek Mukherjee\Downloads\DataIndex7.mat');
+Users= {(user1),(user2),(user3),(user4),(user5),(user6),(user7),(user8),(user9)};
+DataIndexes = {(DataIndex1),(DataIndex2),(DataIndex3),(DataIndex4),(DataIndex5),(DataIndex6),(DataIndex7),(DataIndex8),(DataIndex9)};
+%Users = {(user2)};
+%DataIndexes = {(DataIndex2)};
 %% Evaluation metrics for the proposed algorithm. 
 S_d=0;S_r=0;
  for Num2=1:length(Users)
 %[Likelihood_under_Null,AUC,X,Y,scores,Threshold,Likelihood_under_Alternative,mle_estimates,Window,NoiseWindows,EventWindows,condn,OnsetTimeInstants,tau_mle,SamplingFreqn,Delta,T,OnsetSampleInstants,WindowTimeLength,labels,noise_var,TimeInstantOfFirstSample,locs] = DevPeakLocations(Users{:,Num2},DataIndexes{:,Num2});
-[Likelihood_under_Null,AUC,scores,Likelihood_under_Alternative,Window,OnsetTimeInstants,tau_mle,SamplingFreqn,Delta,T,OnsetSampleInstants,WindowTimeLength,labels,noise_var,TimeInstantOfFirstSample,locs,mle_estimates] = DevPeakLocations(Users{:,Num2},DataIndexes{:,Num2});
+%[Likelihood_under_Null,AUC,scores,Likelihood_under_Alternative,Window,OnsetTimeInstants,tau_mle,SamplingFreqn,Delta,T,OnsetSampleInstants,WindowTimeLength,labels,noise_var,TimeInstantOfFirstSample,locs,mle_estimates] = DevPeakLocations(Users{:,Num2},DataIndexes{:,Num2});
+[mu_check,Likelihood_under_Null,AUC,scores,Likelihood_under_Alternative,Window,OnsetTimeInstants,tau_mle,SamplingFreqn,Delta,T,OnsetSampleInstants,WindowTimeLength,labels,noise_var,TimeInstantOfFirstSample,locs,mle_estimates] = DevianceCalcTwoPara(Users{:,Num2},DataIndexes{:,Num2});
 estimates{Num2} = mle_estimates(:,:); % MLE estimates for the TimeWindows for every user. 
 User_AUC(1,Num2)=AUC; % AUC's for the different users.
 UserScores(:,Num2) = scores;
@@ -24,14 +27,14 @@ Likelihood_under_Null_users(:,Num2) = Likelihood_under_Null(:);
 DownsamplingFactor = T*SamplingFreqn;
 locations{Num2} = locs; %locations of the peaks in the dev. stats.
 Tau_MLE_locs{Num2} = tau_mle(locations{Num2}); % values of tau for the windows where the dev. statistics peaks. 
-%DetectedLocations{Num2} = (Delta+(locations{Num2}*DownsamplingFactor-1)*(1/SamplingFreqn))- (Tau_MLE_locs{Num2}); %calculated at high sample rate
 DetectedLocations{Num2} = (Delta+(locations{Num2})*T)-(Tau_MLE_locs{Num2}); % for low sampling rate
+%DetectedLocations{Num2} = (Delta+1*T+(locations{Num2}-1)*WindowTimeLength)-(Tau_MLE_locs{Num2}); % for low sampling rate    
 RealLocations{Num2} = OnsetTimeInstants(:);
 RealLocationsSamples{Num2} = OnsetSampleInstants(:); % Onset Sample Instants(Handlabelled)
 S_d=S_d+length(DetectedLocations{Num2});
 S_r=S_r+length(RealLocations{Num2});  
 end
-dmax=1:1:5; % vary this to see performance at larger distances. 
+dmax=1:1:3; % vary this to see performance at larger distances. 
 Sdr=zeros(1,length(dmax)); 
 Srd=zeros(1,length(dmax)); 
 for i=1:length(dmax)
