@@ -8,3 +8,5 @@ Electrodermal activity time series.Due to the ultra-low sampling rates most of t
 ***Motivation***: The motivation for this work was to increase the battery life for wearables by decreasing the rate at which they sample for changes in skin conductance. 
 
 ***The details of the model and the results can be found in the paper/report already uploaded in the repo.***
+
+***Author:Abhishek Mukherjee***
