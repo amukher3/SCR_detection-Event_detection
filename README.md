@@ -1,4 +1,4 @@
-# Research-Work_SCR-detection
+# Research-Work: SCR detection / Event detection:
 SCR-- Skin Conductance Response
 This repo has some of the experiments used in my Mastr's research and thesis. 
 
